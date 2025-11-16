@@ -1,0 +1,18 @@
+import React from "react";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { useAuthStore } from "../store/authStore";
+
+export default function ProtectedRoutes() {
+  const token = useAuthStore((s) => s.token);
+  const location = useLocation();
+
+  if (!token) {
+    return React.createElement(Navigate, {
+      to: "/login",
+      replace: true,
+      state: { from: location },
+    });
+  }
+
+  return React.createElement(Outlet, null);
+}
